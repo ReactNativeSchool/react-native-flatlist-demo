@@ -22,14 +22,14 @@ class FlatListDemo extends Component {
 
   makeRemoteRequest = () => {
     const { page, seed } = this.state;
-    const url = `https://randomuser.me/api/?seed=${seed}&page={page}&results=20`;
+    const url = `https://randomuser.me/api/?seed=${seed}&page=${page}&results=20`;
     this.setState({ loading: true });
 
     fetch(url)
       .then(res => res.json())
       .then(res => {
         this.setState({
-          data: res.results || [],
+          data: [...this.state.data, ...res.results],
           error: res.error || null,
           loading: false,
           refreshing: false
@@ -46,6 +46,18 @@ class FlatListDemo extends Component {
         page: 1,
         seed: this.state.seed + 1,
         refreshing: true
+      },
+      () => {
+        this.makeRemoteRequest();
+      }
+    );
+  };
+
+  handleLoadMore = () => {
+    console.log("handle load more");
+    this.setState(
+      {
+        page: this.state.page + 1
       },
       () => {
         this.makeRemoteRequest();
@@ -106,6 +118,8 @@ class FlatListDemo extends Component {
           ListFooterComponent={this.renderFooter}
           onRefresh={this.handleRefresh}
           refreshing={this.state.refreshing}
+          onEndReached={this.handleLoadMore}
+          onEndReachedThreshold={50}
         />
       </List>
     );
