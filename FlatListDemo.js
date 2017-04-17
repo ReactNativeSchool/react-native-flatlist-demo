@@ -37,9 +37,22 @@ class FlatListDemo extends Component {
       });
   };
 
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "86%",
+          backgroundColor: "#CED0CE",
+          marginLeft: "14%"
+        }}
+      />
+    );
+  };
+
   render() {
     return (
-      <List>
+      <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
         <FlatList
           data={this.state.data}
           renderItem={({ item }) => (
@@ -48,9 +61,11 @@ class FlatListDemo extends Component {
               title={`${item.name.first} ${item.name.last}`}
               subtitle={item.email}
               avatar={{ uri: item.picture.thumbnail }}
+              containerStyle={{ borderBottomWidth: 0 }}
             />
           )}
           keyExtractor={item => item.email}
+          ItemSeparatorComponent={this.renderSeparator}
         />
       </List>
     );
