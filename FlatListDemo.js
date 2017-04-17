@@ -54,7 +54,6 @@ class FlatListDemo extends Component {
   };
 
   handleLoadMore = () => {
-    console.log("handle load more");
     this.setState(
       {
         page: this.state.page + 1
