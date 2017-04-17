@@ -11,7 +11,8 @@ class FlatListDemo extends Component {
       data: [],
       page: 1,
       seed: 1,
-      error: null
+      error: null,
+      refreshing: false
     };
   }
 
@@ -23,18 +24,33 @@ class FlatListDemo extends Component {
     const { page, seed } = this.state;
     const url = `https://randomuser.me/api/?seed=${seed}&page={page}&results=20`;
     this.setState({ loading: true });
+
     fetch(url)
       .then(res => res.json())
       .then(res => {
         this.setState({
           data: res.results || [],
           error: res.error || null,
-          loading: false
+          loading: false,
+          refreshing: false
         });
       })
       .catch(error => {
         this.setState({ error, loading: false });
       });
+  };
+
+  handleRefresh = () => {
+    this.setState(
+      {
+        page: 1,
+        seed: this.state.seed + 1,
+        refreshing: true
+      },
+      () => {
+        this.makeRemoteRequest();
+      }
+    );
   };
 
   renderSeparator = () => {
@@ -88,6 +104,8 @@ class FlatListDemo extends Component {
           ItemSeparatorComponent={this.renderSeparator}
           ListHeaderComponent={this.renderHeader}
           ListFooterComponent={this.renderFooter}
+          onRefresh={this.handleRefresh}
+          refreshing={this.state.refreshing}
         />
       </List>
     );
