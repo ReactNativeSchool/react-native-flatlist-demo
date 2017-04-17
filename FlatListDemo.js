@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, FlatList } from "react-native";
-import { List, ListItem } from "react-native-elements";
+import { List, ListItem, SearchBar } from "react-native-elements";
 
 class FlatListDemo extends Component {
   constructor(props) {
@@ -50,6 +50,10 @@ class FlatListDemo extends Component {
     );
   };
 
+  renderHeader = () => {
+    return <SearchBar placeholder="Type Here..." lightTheme round />;
+  };
+
   render() {
     return (
       <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
@@ -66,6 +70,7 @@ class FlatListDemo extends Component {
           )}
           keyExtractor={item => item.email}
           ItemSeparatorComponent={this.renderSeparator}
+          ListHeaderComponent={this.renderHeader}
         />
       </List>
     );
