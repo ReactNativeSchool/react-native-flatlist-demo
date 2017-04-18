@@ -29,7 +29,7 @@ class FlatListDemo extends Component {
       .then(res => res.json())
       .then(res => {
         this.setState({
-          data: [...this.state.data, ...res.results],
+          data: page === 1 ? res.results : [...this.state.data, ...res.results],
           error: res.error || null,
           loading: false,
           refreshing: false
